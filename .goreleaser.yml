@@ -1,0 +1,39 @@
+before:
+  hooks:
+    - go mod download
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+archives:
+  - format_overrides:
+      - goos: windows
+        format: zip
+dockers:
+  - image_templates:
+      - "ghcr.io/appkins-org/go-maaspower:latest"
+      - "ghcr.io/appkins-org/go-maaspower:{{ .Major }}"
+      - "ghcr.io/appkins-org/go-maaspower:{{ .Major }}.{{ .Minor }}"
+      - "ghcr.io/appkins-org/go-maaspower:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
+    build_flag_templates:
+      - "--pull"
+      # OCI annotations: https://github.com/opencontainers/image-spec/blob/main/annotations.md
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+release:
+  github:
+    owner: appkins-org
+    name: go-maaspower
+  name_template: "{{.Version}}"
+  prerelease: auto
+  mode: append
+changelog:
+  skip: true
