@@ -33,7 +33,7 @@ func main() {
 
 	cfg, err := config.GetConfig(filePath)
 	if err != nil {
-		log.Fatalf("Error reading YAML file: %v", err)
+		log.Fatalf("error reading YAML file: %v", err)
 	}
 
 	client = &lazyClient{
@@ -55,7 +55,7 @@ func main() {
 	err = http.ListenAndServe(fmt.Sprintf("%s:%d", address, port), nil)
 
 	if err != nil {
-		log.Fatalf("Error starting server: %v", err)
+		log.Fatalf("error starting server: %v", err)
 	}
 }
 
@@ -64,13 +64,13 @@ func getPort(ctx context.Context, macAddress string, portIdx string) (deviceId s
 
 	p, err := strconv.Atoi(portIdx)
 	if err != nil {
-		err = fmt.Errorf("Error getting integer value from port %s: %v", portIdx, err)
+		err = fmt.Errorf("error getting integer value from port %s: %v", portIdx, err)
 		return
 	}
 
 	dev, err := client.GetDeviceByMAC(ctx, "default", macAddress)
 	if err != nil {
-		err = fmt.Errorf("Error getting device by MAC Address %s: %v", macAddress, err)
+		err = fmt.Errorf("error getting device by MAC Address %s: %v", macAddress, err)
 		return
 	}
 
@@ -89,12 +89,12 @@ func getPort(ctx context.Context, macAddress string, portIdx string) (deviceId s
 func setPortPower(ctx context.Context, macAddress string, portIdx string, state string) error {
 	p, err := strconv.Atoi(portIdx)
 	if err != nil {
-		return fmt.Errorf("Error getting integer value from port %s: %v", portIdx, err)
+		return fmt.Errorf("error getting integer value from port %s: %v", portIdx, err)
 	}
 
 	dev, err := client.GetDeviceByMAC(ctx, "default", macAddress)
 	if err != nil {
-		return fmt.Errorf("Error getting device by MAC Address %s: %v", macAddress, err)
+		return fmt.Errorf("error getting device by MAC Address %s: %v", macAddress, err)
 	}
 
 	for i, pd := range dev.PortOverrides {
@@ -119,7 +119,7 @@ func setPortPower(ctx context.Context, macAddress string, portIdx string, state 
 	_, err = client.UpdateDevice(ctx, "default", dev)
 
 	if err != nil {
-		return fmt.Errorf("Error updating device: %v", err)
+		return fmt.Errorf("error updating device: %v", err)
 	}
 
 	return nil
@@ -142,8 +142,8 @@ func RPCHandler(w http.ResponseWriter, r *http.Request) {
 	case rpc.PowerGetMethod:
 		state, err := GetPower(r.Context(), machine.MacAddress, machine.PortIdx)
 		if err != nil {
-			log.Fatalf("Error getting power state for MAC Address %s, Port Index %s: %v", machine.MacAddress, machine.PortIdx, err)
-			fmt.Fprintf(w, "Error getting power state for MAC Address %s, Port Index %s: %v", machine.MacAddress, machine.PortIdx, err)
+			log.Fatalf("error getting power state for MAC Address %s, Port Index %s: %v", machine.MacAddress, machine.PortIdx, err)
+			fmt.Fprintf(w, "error getting power state for MAC Address %s, Port Index %s: %v", machine.MacAddress, machine.PortIdx, err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -151,26 +151,26 @@ func RPCHandler(w http.ResponseWriter, r *http.Request) {
 	case rpc.PowerSetMethod:
 		p, ok := req.Params.(rpc.PowerSetParams)
 		if !ok {
-			log.Fatalf("Error asserting params to PowerSetParams")
-			fmt.Fprintf(w, "Error asserting params to PowerSetParams")
+			log.Fatalf("error asserting params to PowerSetParams")
+			fmt.Fprintf(w, "error asserting params to PowerSetParams")
 			w.WriteHeader(http.StatusBadRequest)
 		}
 		state := p.State
 		err := setPortPower(r.Context(), machine.MacAddress, machine.PortIdx, state)
 		if err != nil {
-			log.Fatalf("Error setting power on for MAC Address %s, Port Index %s: %v", machine.MacAddress, machine.PortIdx, err)
-			fmt.Fprintf(w, "Error setting power on for MAC Address %s, Port Index %s: %v", machine.MacAddress, machine.PortIdx, err)
+			log.Fatalf("error setting power on for MAC Address %s, Port Index %s: %v", machine.MacAddress, machine.PortIdx, err)
+			fmt.Fprintf(w, "error setting power on for MAC Address %s, Port Index %s: %v", machine.MacAddress, machine.PortIdx, err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 	case rpc.BootDeviceMethod:
 		p, ok := req.Params.(rpc.BootDeviceParams)
 		if !ok {
-			log.Fatalf("Error asserting params to BootDeviceParams")
-			fmt.Fprintf(w, "Error asserting params to BootDeviceParams")
+			log.Fatalf("error asserting params to BootDeviceParams")
+			fmt.Fprintf(w, "error asserting params to BootDeviceParams")
 			w.WriteHeader(http.StatusBadRequest)
 		}
-		fmt.Fprintf(w, "BootDevice request for MAC Address %s, Port Index %s, Device %s, Persistent %t, EFIBoot %t", machine.MacAddress, machine.PortIdx, p.Device, p.Persistent, p.EFIBoot)
+		fmt.Fprintf(w, "boot device request for MAC Address %s, Port Index %s, Device %s, Persistent %t, EFIBoot %t", machine.MacAddress, machine.PortIdx, p.Device, p.Persistent, p.EFIBoot)
 
 	case rpc.PingMethod:
 
@@ -185,7 +185,7 @@ func RPCHandler(w http.ResponseWriter, r *http.Request) {
 func GetPower(ctx context.Context, macAddress string, portIdx string) (state string, err error) {
 	_, port, err := getPort(ctx, macAddress, portIdx)
 	if err != nil {
-		fmt.Printf("Error setting power on for MAC Address %s, Port Index %s: %v", macAddress, portIdx, err)
+		fmt.Printf("error setting power on for MAC Address %s, Port Index %s: %v", macAddress, portIdx, err)
 		return
 	}
 
@@ -207,7 +207,7 @@ func QueryHandler(w http.ResponseWriter, r *http.Request) {
 
 	_, port, err := getPort(r.Context(), macAddress, portIdx)
 	if err != nil {
-		fmt.Fprintf(w, "Error setting power on for MAC Address %s, Port Index %s: %v", macAddress, portIdx, err)
+		fmt.Fprintf(w, "error setting power on for MAC Address %s, Port Index %s: %v", macAddress, portIdx, err)
 		return
 	}
 
@@ -221,5 +221,5 @@ func QueryHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Query request for MAC Address %s, Port Index %s", macAddress, portIdx)
+	fmt.Fprintf(w, "query request for MAC Address %s, Port Index %s", macAddress, portIdx)
 }
