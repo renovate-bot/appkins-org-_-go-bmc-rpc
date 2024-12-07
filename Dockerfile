@@ -18,7 +18,7 @@ ARG TARGETOS
 # Build
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -a -o rpc-api main.go
 
-FROM alpine:3.19
+FROM alpine:3.21
 
 COPY --from=builder /workspace/rpc-api .
 
