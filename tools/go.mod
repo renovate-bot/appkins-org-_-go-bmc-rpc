@@ -2,7 +2,7 @@ module github.com/appkins-org/go-maaspower/build
 
 go 1.23.4
 
-toolchain go1.23.5
+toolchain go1.27.1
 
 require (
 	github.com/client9/misspell v0.3.4
