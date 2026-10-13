@@ -1,8 +1,6 @@
 module github.com/appkins-org/go-maaspower/build
 
-go 1.23.4
-
-toolchain go1.23.5
+go 1.24
 
 require (
 	github.com/client9/misspell v0.3.4
@@ -66,7 +64,7 @@ require (
 	github.com/atc0005/go-teams-notify/v2 v2.13.0 // indirect
 	github.com/aws/aws-sdk-go v1.55.5 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.30.5 // indirect
-	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.3 // indirect
+	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.8 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.27.33 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.32 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.13 // indirect
@@ -86,7 +84,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.22.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.26.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.30.7 // indirect
-	github.com/aws/smithy-go v1.20.4 // indirect
+	github.com/aws/smithy-go v1.24.2 // indirect
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240514230400-03fa26f5508f // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
